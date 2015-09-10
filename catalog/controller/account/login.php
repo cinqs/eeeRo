@@ -75,6 +75,8 @@ class ControllerAccountLogin extends Controller {
 			$this->load->model('account/address');
 				
 			$address_info = $this->model_account_address->getAddress($this->customer->getAddressId());
+
+			
 									
 			if ($address_info) {
 				if ($this->config->get('config_tax_customer') == 'shipping') {

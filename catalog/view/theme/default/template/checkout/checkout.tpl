@@ -917,10 +917,28 @@ $('#button-payment-method').live('click', function() {
 						
 						$('#payment-method .checkout-heading a').remove();
 						
-						$('#payment-method .checkout-heading').append('<a><?php echo $text_modify; ?></a>');	
+						$('#payment-method .checkout-heading').append('<a><?php echo $text_modify; ?></a>');
+
 					},
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					},
+					complete:function(){
+						$.ajax({
+							url:'index.php?route=checkout/checkout/getbottomprice',
+							dataType:'json',
+							method:'post',
+							success:function(json){
+								console.log(json);
+								var bottom = parseFloat(json.bottom);
+								var current = parseFloat(json.current);
+
+								if (bottom > current) {
+									$("#button-confirm").attr('disabled', true);
+									$("#button-confirm").after("<br>liveraison pour voter zone a partir de "+bottom+" euros");
+								};
+							},
+						});
 					}
 				});	
 			}

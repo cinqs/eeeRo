@@ -153,7 +153,7 @@ $(document).ready(function(){
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="<?php echo $home; ?>"><div><span><img src="/admin/image/risheng.png"></span></div></a>
+        <a class="brand" href="<?php echo $home; ?>"><div><span><img src="/admin/img/lotus.png"></span></div></a>
 
         <!-- theme selector starts -->
         <!--<div class="btn-group pull-right theme-container" >

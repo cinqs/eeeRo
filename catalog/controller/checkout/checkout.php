@@ -105,5 +105,63 @@ class ControllerCheckoutCheckout extends Controller {
 		
 		$this->response->setOutput(json_encode($json));
 	}
+
+	public function getbottomprice(){
+		$this->load->model('localisation/country');
+
+		$this->load->model('localisation/zone');
+		$zone_infos = $this->model_localisation_zone->getZonesByCountryId(73);
+
+		if (isset($this->session->data['shipping_postcode'])) {
+			$postcode = $this->session->data['shipping_postcode'];
+
+			foreach ($zone_infos as $zone_info) {
+				if ($zone_info['code'] == $postcode) {
+					$bottomprice = $zone_info['bottomprice'];
+				}
+			}
+		}
+
+		$total_data = array();
+		$total = 0;
+		$taxes = $this->cart->getTaxes();
+		 
+		$this->load->model('setting/extension');
+		
+		$sort_order = array(); 
+		
+		$results = $this->model_setting_extension->getExtensions('total');
+		
+		foreach ($results as $key => $value) {
+			$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+		}
+		
+		array_multisort($sort_order, SORT_ASC, $results);
+		
+		foreach ($results as $result) {
+			if ($this->config->get($result['code'] . '_status')) {
+				$this->load->model('total/' . $result['code']);
+	
+				$this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
+			}
+		}
+
+
+		foreach ($total_data as $total) {
+			$currenttotal = $total['value'];
+		}
+
+
+		if (isset($bottomprice)) {
+			$totals = array(
+				'bottom' => floatval($bottomprice),
+				'current'=> floatval($currenttotal),
+			);
+
+			print json_encode($totals);
+		}else{
+			print false;
+		}
+	}
 }
 ?>

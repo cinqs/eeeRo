@@ -45,6 +45,12 @@
               </select></td>
           </tr>
           <tr>
+            <td>A partir de:</td>
+            <td>
+              <input type="number" name="bottomprice" value="<?=$bottomprice?>">
+            </td>
+          </tr>
+          <tr>
             <td><?php echo $entry_status; ?></td>
             <td><select name="status">
                 <?php if ($status) { ?>

@@ -186,6 +186,7 @@ class ControllerLocalisationZone extends Controller {
 				'country'  => $result['country'],
 				'name'     => $result['name'] . (($result['zone_id'] == $this->config->get('config_zone_id')) ? $this->language->get('text_default') : null),
 				'code'     => $result['code'],
+				'bottomprice' => $result['bottomprice'],
 				'selected' => isset($this->request->post['selected']) && in_array($result['zone_id'], $this->request->post['selected']),
 				'action'   => $action			
 			);
@@ -336,6 +337,14 @@ class ControllerLocalisationZone extends Controller {
 			$this->data['status'] = $zone_info['status'];
 		} else {
 			$this->data['status'] = '1';
+		}
+
+		if (isset($this->request->post['bottomprice'])) {
+			$this->data['bottomprice'] = $this->request->post['bottomprice'];
+		}elseif (!empty($zone_info)) {
+			$this->data['bottomprice'] = $zone_info['bottomprice'];
+		}else{
+			$this->data['bottomprice'] = 15;
 		}
 		
 		if (isset($this->request->post['name'])) {
